@@ -25,6 +25,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
+
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -40,10 +41,10 @@ AppAsset::register($this);
         ['label' => 'Contact', 'url' => ['/site/contact']],*/
     ];
     if (Yii::$app->user->isGuest) {
-       /* $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];*/
+        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Account', 'url' => ['/account']];
+        $menuItems[] = ['label' => 'Account', 'url' => ['/service-order/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
