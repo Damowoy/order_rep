@@ -8,7 +8,7 @@ use yii\helpers\ArrayHelper;
 use yii\base\NotSupportedException;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
-use app\api\modules\v1\models\Firm;
+//use app\api\modules\v1\models\Firm;
 
 /**
  * Firm Controller API

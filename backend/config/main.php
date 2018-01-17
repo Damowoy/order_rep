@@ -43,8 +43,9 @@ return [
             /*'rules' => [
             ],*/
             'rules' => [
-                'users' => 'users/index',
-                'users/' => 'users/view'
+                'gii'=>'gii',
+                'gii/<controller:\w+>'=>'gii/<controller>',
+                'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',
             ],
         ],
     ],
