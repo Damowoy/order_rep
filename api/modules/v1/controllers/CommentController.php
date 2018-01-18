@@ -2,6 +2,11 @@
 namespace api\modules\v1\controllers;
 
 use yii\rest\ActiveController;
+use yii\filters\AccessControl;
+use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use common\models\User;
+use common\models\LoginForm;
 use api\modules\v1\models\Comment;
 
 /**

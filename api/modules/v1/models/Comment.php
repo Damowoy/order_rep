@@ -20,15 +20,17 @@ class Comment extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'service_order_id', 'user_id','comment','created_dt'], 'required']
+            [['service_order_id', 'user_id','comment','created_dt'], 'required']
         ];
     }
     public function attributeLabels()
     {
         return [
-           'id'          => 'ID',
-           'comment'     => 'Comment name',
-            /* 'description' => 'Description',*/
+            'id'               => 'ID',
+            'service_order_id' => 'Order id',
+            'user_id'          => 'User id',
+            'comment'          => 'Comment',
+            'created_dt'       => 'Created date',
         ];
     }
 
