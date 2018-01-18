@@ -32,7 +32,7 @@ class ServiceOrder extends ActiveRecord
     {
 
         return [
-            [['id', 'name_service', 'description','company','place','address'], 'required']
+            [['status_id','name_service', 'description','company','place','address'], 'required']
         ];
     }
     public function attributeLabels()
@@ -41,6 +41,10 @@ class ServiceOrder extends ActiveRecord
             'id'            => 'ID',
             'name_service'  => 'Name service',
             'description'   => 'Description',
+            'status_id'     => 'Status id',
+            'company'       => 'Company',
+            'place'         => 'Place',
+            'address'       => 'Address',
         ];
     }
 

@@ -61,12 +61,8 @@ class ServiceOrderController extends ActiveController
 
     public function actionListOrder($id)
     {
-       // $request = Yii::$app->request;
-         // $user_id=$request->get('user_id');//
         $model   = ServiceOrder::find()->where(['user_id' => $id])->all();
-
         $dataOrder=array();
-
         if($model){
             foreach ($model as $val){
                 $userArry =User::findOne(['id'=>$val->user_id]);
@@ -102,25 +98,22 @@ class ServiceOrderController extends ActiveController
 
             }
         }
-
-        /*echo "<pre>";
-        print_r($model);*/
-
-
         return $dataOrder;
-
     }
 
     public function actionCreate()
     {
-        $model = new Post();
-        $model->user_id = Yii::$app->user->id;
+        $model = new ServiceOrder();
+     //   echo Yii::$app->user->id.'ssssssss';
+       // exit();
+        $model->user_id   = Yii::$app->user->id;
+        $model->status_id = 1;
         $model->load(Yii::$app->getRequest()->getBodyParams(), '');
         if ($model->save()) {
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
-            $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $id], true));
+           // $id = implode(',', array_values($model->getPrimaryKey(true)));
+           // $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $id], true));
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         }
@@ -135,20 +128,21 @@ class ServiceOrderController extends ActiveController
 
     public function checkAccess($action, $model = null, $params = [])
     {
-       /* exit();
-        if (in_array($action, ['index','view',  'update', 'delete'])) {
+
+        if (in_array($action, ['index','view','update', 'delete'])) {
 
             if ( Yii::$app->user->can('supplier') === false
                 or Yii::$app->user->identity->supplierID === null
                 or $model->supplierID !== \Yii::$app->user->identity->supplierID )
             {
                 throw new \yii\web\ForbiddenHttpException('You can\'t '.$action.' this product.');
-            }*/
+            }
 
 
             /*if (!Yii::$app->user->can(Rbac::MANAGE_POST, ['post' => $model])) {
                 throw  new ForbiddenHttpException('Forbidden.');
             }*/
-       // }
+
+         }
     }
 }
