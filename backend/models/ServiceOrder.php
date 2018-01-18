@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $user_id
- * @property integer $manager_id
+ * @property integer $engener_id
  * @property integer $status_id
  * @property string $name_service
  * @property string $description
@@ -33,7 +33,7 @@ class ServiceOrder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'manager_id', 'status_id'], 'integer'],
+            [['user_id', 'engener_id', 'status_id'], 'integer'],
             [['description'], 'string'],
             [['name_service', 'company', 'address'], 'string', 'max' => 255],
             [['place'], 'string', 'max' => 50],
@@ -48,7 +48,7 @@ class ServiceOrder extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'manager_id' => 'Manager ID',
+            'engener_id' => 'Engener ID',
             'status_id' => 'Status ID',
             'name_service' => 'Name Service',
             'description' => 'Description',

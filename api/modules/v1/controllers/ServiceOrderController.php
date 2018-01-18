@@ -43,14 +43,14 @@ class ServiceOrderController extends ActiveController
         return $behaviors;
     }
 
-    public function ActionAuthenticate(){
+   /* public function ActionAuthenticate(){
 
         $request = Yii::$app->request;
         $authHeader=$request->getHeaders()->get('authorization');
         print_r($authHeader);
         return '';
 
-    }
+    }*/
 
     public function actions()
     {

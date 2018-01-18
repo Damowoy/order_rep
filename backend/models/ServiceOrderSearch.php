@@ -18,7 +18,7 @@ class ServiceOrderSearch extends ServiceOrder
     public function rules()
     {
         return [
-            [['id', 'user_id', 'manager_id', 'status_id'], 'integer'],
+            [['id', 'user_id', 'engener_id', 'status_id'], 'integer'],
             [['name_service', 'description', 'company', 'place', 'address'], 'safe'],
         ];
     }
@@ -61,7 +61,7 @@ class ServiceOrderSearch extends ServiceOrder
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'manager_id' => $this->manager_id,
+            'engener_id' => $this->engener_id,
             'status_id' => $this->status_id,
         ]);
 
