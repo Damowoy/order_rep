@@ -31,4 +31,8 @@ class Token extends ActiveRecord
             },
         ];
     }
+    public function extraFields()
+    {
+        return ['user_id'];
+    }
 }

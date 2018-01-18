@@ -43,6 +43,7 @@ return [
             /*'rules' => [
             ],*/
             'rules' => [
+                'user'=>'users',
                 'gii'=>'gii',
                 'gii/<controller:\w+>'=>'gii/<controller>',
                 'gii/<controller:\w+>/<action:\w+>'=>'gii/<controller>/<action>',

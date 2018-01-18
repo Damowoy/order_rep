@@ -1,12 +1,13 @@
 <?php
 namespace api\modules\v1\models;
 use \yii\db\ActiveRecord;
+use yii\web\IdentityInterface;
 /**
  * User Model
  *
  * @author Budi Irawan <deerawan@gmail.com>
  */
-class User extends ActiveRecord
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -19,10 +20,6 @@ class User extends ActiveRecord
     /**
      * @inheritdoc
      */
-  /*  public static function primaryKey()
-    {
-        return ['id'];
-    }*/
     public function attributeLabels()
     {
         return [
@@ -35,30 +32,10 @@ class User extends ActiveRecord
     public function fields()
     {
         return [
-            // field name is the same as the attribute name
             'id',
-            // field name is "email", the corresponding attribute name is "email_address"
             'username' => 'username',
-
             'email' => 'email',
 
-            // field name is "name", its value is defined by a PHP callback
-
-        ];
-
-       // $fields = parent::fields();
-        // remove fields that contain sensitive information
-        //unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
-        //return $fields;
-    }
-
-    public function getLinks()
-    {
-        return [
-            Link::REL_SELF => Url::to(['user/view', 'id' => $this->id], true),
-            'edit' => Url::to(['user/view', 'id' => $this->id], true),
-            'profile' => Url::to(['user/profile/view', 'id' => $this->id], true),
-            'index' => Url::to(['users'], true),
         ];
     }
 
@@ -71,5 +48,10 @@ class User extends ActiveRecord
         return [
             [['id', 'username', 'email'], 'required']
         ];
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return static::findOne(['access_token' => $token]);
     }
 }

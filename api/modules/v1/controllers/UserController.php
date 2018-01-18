@@ -5,17 +5,18 @@ namespace api\modules\v1\controllers;
 use Yii;
 use yii\rest\ActiveController;
 use yii\rest\Controller;
+use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\base\NotSupportedException;
 use yii\web\Response;
 use yii\filters\ContentNegotiator;
 use api\modules\v1\models\User;
 use api\modules\v1\models\LoginForm;
+use api\modules\v1\models\Token;
 
-
-//use common\models\LoginForm;
-//use yii\web\Controller;
 /**
  * User Controller API
  *
@@ -24,33 +25,15 @@ use api\modules\v1\models\LoginForm;
 //yii\rest\Controller
 //yii\rest\ActiveController
 
-
-class UserController extends ActiveController //Controller/
+class UserController extends Controller // /  ActiveController
 {
     public $modelClass = 'api\modules\v1\models\User';
     /**
      * @inheritdoc
      */
-    public function actionIndex()
-    {
 
-        return "api";
-    }
-      public function actionTm($id)
-      {
-          echo $id; //View
-          exit();
-          return User::findOne($id);
-      }
-    public function actionView($id)
-    {
-      /*  echo $id; //View
-        exit();*/
-        return User::findOne($id);
-    }
     public function actionLogin()
     {
-
         $model = new LoginForm();
         $model->load(Yii::$app->request->bodyParams, '');
         if ($token = $model->auth()) {
@@ -58,14 +41,82 @@ class UserController extends ActiveController //Controller/
         } else {
             return $model;
         }
-
     }
+
+    public function actionView($id)
+    {
+        $token= Token::findOne([
+            'token' => $id
+        ]);
+
+        return $token;
+      // exit();
+      //  return User::findOne($id);
+    }
+
+    public function checkAccess($action, $model = null, $params = [])
+    {
+        if (in_array($action, ['update', 'delete', 'create', 'index'])) {//
+            if (!Yii::$app->user->can(Rbac::MANAGE_POST, ['post' => $model])) {
+                throw  new ForbiddenHttpException('Forbidden.');
+            }
+        }
+    }
+
     protected function verbs()
     {
         return [
-          //  'login' => ['post'],
+            'login' => ['post'],
+
         ];
     }
+
+
+    /*   public function behaviors()
+   {
+       $behaviors = parent::behaviors();
+       $behaviors['authenticator']['authMethods'] = [
+           HttpBasicAuth::className(),
+           HttpBearerAuth::className(),
+       ];
+       $behaviors['access'] = [
+           'class' => AccessControl::className(),
+           'rules' => [
+               [
+                   'allow' => true,
+                   'roles' => ['@'],
+               ],
+           ],
+       ];
+       return $behaviors;
+   }*/
+    /*public function actionIndex()
+    {
+
+        return "api";
+    }
+      public function actionTm($id)
+      {
+          echo $id;
+          exit();
+          return User::findOne($id);
+      }*/
+/*
+
+    public function actionView($id)
+    {
+    return User::findOne($id);
+    }
+*
+*/
+
+   /* protected function verbs()
+    {
+        return [
+            'login' => ['post'],
+        ];
+    }*/
+
 
 
 /*

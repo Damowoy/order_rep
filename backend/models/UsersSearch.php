@@ -19,7 +19,7 @@ class UsersSearch extends Users
     public function rules()
     {
         return [
-            [['id', 'status', 'role', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'status',  'created_at', 'updated_at'], 'integer'],
             [['username', 'email'], 'safe'],
         ];
     }

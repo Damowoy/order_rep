@@ -63,15 +63,22 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
-
+    public function getTokens()
+    {
+        return $this->hasMany(Token::className(), ['user_id' => 'id']);
+    }
     /**
      * @inheritdoc
      */
+
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::find()
+            ->joinWith('tokens t')
+            ->andWhere(['t.token' => $token])
+            ->andWhere(['>', 't.expired_at', time()])
+            ->one();
     }
-
     /**
      * Finds user by username
      *

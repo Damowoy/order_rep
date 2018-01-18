@@ -27,9 +27,9 @@ return [
           "format" => 'json'
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass'   => 'common\models\User',
             'enableAutoLogin' => false,
-            'enableSession' => false,
+            'enableSession'   => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -45,24 +45,29 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-
-                    //'class'         => 'yii\rest\UrlRule',
-                    ''                  =>'v1/user/index',
-                    'auth'              =>'v1/user/login',
-                    'yyy/<id:\d+>'      =>'v1/user/tm',
+                // 'GET profile' => 'profile/index',
+                    'auth'                   =>'v1/user/login',
+                    'user/?acces_token=<id>' =>'v1/user/view',
+                    'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
+               // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
+                   // 'profile/<id:\d+>'      =>'v1/user/view',
                    // 'GET profile'       =>'profile/index',
                    // 'PUT,PATCH profile' =>'profile/update',
                     [
                         'class' => 'yii\rest\UrlRule',
-                        'controller' =>
-                            [
+                        'controller' =>//_EkZYCIB8rm51yMfCvIHr0sqTcHRNcb8
+                            [ //(?P<id>\d+)
                                 'user'         =>'v1/user',
-                                'user/<id:\d+>'=>'v1/user/view',
                                 'firm'         =>'v1/firm',
                                 'serviceorder' =>'v1/service-order',
                                 'comment'      =>'v1/comment'
-                            ]
+                            ],
+                        /*'tokens' => [
+                            '{id}' => '<id:\\w+>',
+                            '{type}'=>'<type:\\w+>'
+                        ],*/
                     ],
+
                     //'controller'    => ['user'=>'v1/user','yyy'=>'v1/user/tm','firm'=>'v1/firm'],//,'v1/user/view','v1/user/login','v1/firm'
                     //'yyy'          => 'v1/user/tm', //user/<id:\d+>
                     ///<id:\d+>
