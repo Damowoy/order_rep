@@ -59,14 +59,18 @@ class ServiceOrderController extends ActiveController
         return $actions;
     }
 
-    public function actionListOrder($id)
-    {
+    public function actionListOrder($id,$order_id=Null)
+    {  if(!empty($order_id)){
+        $model   = ServiceOrder::find()->where(['id' => $order_id])->all();
+       }else{
         $model   = ServiceOrder::find()->where(['user_id' => $id])->all();
+      }
+
         $dataOrder=array();
         if($model){
             foreach ($model as $val){
                 $userArry =User::findOne(['id'=>$val->user_id]);
-                $managerArry =User::findOne(['id'=>$val->manager_id]);
+                $managerArry =User::findOne(['id'=>$val->engener_id]);
                 if($managerArry){
                     $managerObect=array(
                         'id'        => $managerArry->id,
@@ -87,7 +91,7 @@ class ServiceOrderController extends ActiveController
                         'lastname'  => $userArry->lastname,
                         'firstname' => $userArry->firstname,
                     ),
-                    'manager'     => $managerObect,
+                    'engener'     => $managerObect,
                     'status_id'   => $val->status_id,
                     'description' => $val->description,
                     'company'     => $val->company,
@@ -100,7 +104,36 @@ class ServiceOrderController extends ActiveController
         }
         return $dataOrder;
     }
+    public function actionEnegerStatus()
+    {
+        $model = new ServiceOrder();
+        $request = Yii::$app->request;
+        $status_id=$request->post('status_id');
+        $id=$request->post('id');
+        $engener_id=$request->post('engener_id');
+        if(isset($status_id) &&  $status_id>0 && isset($id) &&  $id>0 && isset($engener_id) &&  $engener_id>0 ){
 
+            $order =ServiceOrder::findOne(['id'=>$id]);
+            $order->status_id = $status_id;
+            $order->engener_id= $engener_id;
+           // print_r($request->post('status_id'));
+           // print_r($request->post('id'));
+            if ($order->save()) {
+
+                return $this->actionListOrder(Yii::$app->user->id,$id);
+
+            }else{
+                throw new \yii\web\ForbiddenHttpException('Failed update status!');
+            }
+
+        }else{
+
+            throw new \yii\web\ForbiddenHttpException('Failed fields not!');
+        }
+
+
+          return;
+    }
     public function actionCreate()
     {
         $model = new ServiceOrder();
@@ -116,6 +149,7 @@ class ServiceOrderController extends ActiveController
            // $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $id], true));
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
+
         }
         return $model;
     }

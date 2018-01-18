@@ -20,7 +20,7 @@ class m180117_114734_create_table_service_order extends Migration
         $this->createTable('{{%service_order}}', [
             'id'          => $this->primaryKey(),
             'user_id'     => $this->integer()->notNull(),
-            'manager_id'  => $this->integer(),
+            'engener_id'  => $this->integer(),
             'status_id'   => $this->integer()->notNull(),
             'name_service'=> $this->string()->notNull(),
             'description' => $this->string()->notNull(),

@@ -21,13 +21,11 @@ class m180117_120125_create_table_order_stdate extends Migration
             'id'               => $this->primaryKey(),
             'service_order_id' => $this->integer()->notNull(),
             'status_id'        => $this->integer()->notNull(),
-            'start_date'       => $this->dateTime()->notNull(),
-            'end_date'         => $this->dateTime()->notNull(),
+            'created_at'       => $this->dateTime()->notNull(),
         ], $tableOptions);
 
         $this->addForeignKey('fk-orderstdate-service_order_id', '{{%order_stdate}}', 'service_order_id', '{{%service_order}}', 'id', 'CASCADE', 'RESTRICT');
         $this->addForeignKey('fk-orderstdate-status_id', '{{%order_stdate}}', 'status_id', '{{%status}}', 'id', 'CASCADE', 'RESTRICT');
-
 
     }
 

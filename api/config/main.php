@@ -49,6 +49,8 @@ return [
                     'auth'                   =>'v1/user/login',
                     'user/?acces_token=<id>' =>'v1/user/view',
                     'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
+                    'POST orders/status'    =>'v1/service-order/eneger-status',
+
                // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
                    // 'profile/<id:\d+>'      =>'v1/user/view',
                    // 'GET profile'       =>'profile/index',
@@ -59,7 +61,7 @@ return [
                             [ //(?P<id>\d+)
                                 'user'         =>'v1/user',
                                 'firm'         =>'v1/firm',
-                                'serviceorder' =>'v1/service-order',
+                                'orders'       =>'v1/service-order',
                                 'comment'      =>'v1/comment'
                             ],
                         /*'tokens' => [
