@@ -17,4 +17,22 @@ class CommentController extends ActiveController
      * @inheritdoc
      */
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['authMethods'] = [
+            HttpBasicAuth::className(),
+            HttpBearerAuth::className(),
+        ];
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
+        ];
+        return $behaviors;
+    }
 }

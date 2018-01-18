@@ -19,6 +19,25 @@ class FirmController extends ActiveController
 {
     public $modelClass = 'api\modules\v1\models\Firm';
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['authMethods'] = [
+            HttpBasicAuth::className(),
+            HttpBearerAuth::className(),
+        ];
+        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
+        ];
+        return $behaviors;
+    }
+
     /**
      * @inheritdoc
      */

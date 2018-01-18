@@ -10,6 +10,8 @@ use yii\filters\auth\HttpBearerAuth;
 use common\models\User;
 use common\models\LoginForm;
 use api\modules\v1\models\ServiceOrder;
+use api\modules\v1\models\OrderStdate;
+
 
 /**
  * Firm Controller API
@@ -58,19 +60,36 @@ class ServiceOrderController extends ActiveController
         //unset($actions['index'], $actions['delete'], $actions['create'], $actions['update'], $actions['options']);
         return $actions;
     }
+    public function actionProfiles($id=Null)
+    {
+        $userRsult=array();
+        if(Yii::$app->user->identity->role_id==2){
+           $userRsult= User::find()->where(['role_id' => 3])->all();
+        }else{
+            throw new \yii\web\ForbiddenHttpException('Not permission!');
+        }
 
-    public function actionListOrder($id,$order_id=Null)
-    {  if(!empty($order_id)){
-        $model   = ServiceOrder::find()->where(['id' => $order_id])->all();
-       }else{
-        $model   = ServiceOrder::find()->where(['user_id' => $id])->all();
-      }
-
+      return $userRsult;
+    }
+    public function actionListOrder($id=Null)
+    {
+        if(isset($id) && !empty($id)){
+          $model   = ServiceOrder::find()->where(['id' => $id])->all();
+        }else{
+            if(Yii::$app->user->identity->role_id==2){
+               $model   = ServiceOrder::find()->all();
+            }else{
+               $model   = ServiceOrder::find()->where(['user_id' => Yii::$app->user->id])->all();
+            }
+        }
         $dataOrder=array();
         if($model){
             foreach ($model as $val){
                 $userArry =User::findOne(['id'=>$val->user_id]);
                 $managerArry =User::findOne(['id'=>$val->engener_id]);
+                $orderStdateArray =OrderStdate::findOne(['service_order_id'=>$val->id]);
+
+
                 if($managerArry){
                     $managerObect=array(
                         'id'        => $managerArry->id,
@@ -97,6 +116,7 @@ class ServiceOrderController extends ActiveController
                     'company'     => $val->company,
                     'address'     => $val->address,
                     'place'       => $val->place,
+                    'order_stdate'=> $orderStdateArray
 
                 );
 
@@ -111,16 +131,14 @@ class ServiceOrderController extends ActiveController
         $status_id=$request->post('status_id');
         $id=$request->post('id');
         $engener_id=$request->post('engener_id');
-        if(isset($status_id) &&  $status_id>0 && isset($id) &&  $id>0 && isset($engener_id) &&  $engener_id>0 ){
+        if(isset($status_id) && !empty($status_id) && isset($id) && !empty($id) && isset($engener_id) &&  !empty($engener_id) ){
 
             $order =ServiceOrder::findOne(['id'=>$id]);
             $order->status_id = $status_id;
             $order->engener_id= $engener_id;
-           // print_r($request->post('status_id'));
-           // print_r($request->post('id'));
             if ($order->save()) {
 
-                return $this->actionListOrder(Yii::$app->user->id,$id);
+                return $this->actionListOrder($id);
 
             }else{
                 throw new \yii\web\ForbiddenHttpException('Failed update status!');
@@ -137,26 +155,38 @@ class ServiceOrderController extends ActiveController
     public function actionCreate()
     {
         $model = new ServiceOrder();
+
+
      //   echo Yii::$app->user->id.'ssssssss';
        // exit();
         $model->user_id   = Yii::$app->user->id;
         $model->status_id = 1;
         $model->load(Yii::$app->getRequest()->getBodyParams(), '');
         if ($model->save()) {
+
             $response = Yii::$app->getResponse();
             $response->setStatusCode(201);
-           // $id = implode(',', array_values($model->getPrimaryKey(true)));
+            $id = implode(',', array_values($model->getPrimaryKey(true)));
+            $modelStdate = new OrderStdate();
+            $modelStdate->status_id = 1;
+            $modelStdate->service_order_id=$id;
+            $modelStdate->created_at=date("Y-m-d H:i:s");
+
+            if ($modelStdate->save()) {
+            }else{
+                throw new \yii\web\ForbiddenHttpException('Failed insert time status!');
+            }
+
            // $response->getHeaders()->set('Location', Url::toRoute(['view', 'id' => $id], true));
         } elseif (!$model->hasErrors()) {
-            throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
-
+            throw new \yii\web\ForbiddenHttpException('Failed to create the object for unknown reason.');
         }
         return $model;
     }
     public function prepareDataProvider()
     {
         //$searchModel = new PostSearch();
-        return 'list orders';//$searchModel->search(Yii::$app->request->queryParams);
+        return '';//$searchModel->search(Yii::$app->request->queryParams);
     }
  //   public $checkAccessToActions   = ['index','view','update','delete'];
 

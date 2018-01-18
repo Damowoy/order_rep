@@ -48,8 +48,10 @@ return [
                 // 'GET profile' => 'profile/index',
                     'auth'                   =>'v1/user/login',
                     'user/?acces_token=<id>' =>'v1/user/view',
+                    'GET orders'             =>'v1/service-order/list-order',
                     'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
-                    'POST orders/status'    =>'v1/service-order/eneger-status',
+                    'GET profiles'           =>'v1/service-order/profiles',
+                    'POST orders/status'     =>'v1/service-order/eneger-status',
 
                // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
                    // 'profile/<id:\d+>'      =>'v1/user/view',
@@ -62,7 +64,8 @@ return [
                                 'user'         =>'v1/user',
                                 'firm'         =>'v1/firm',
                                 'orders'       =>'v1/service-order',
-                                'comment'      =>'v1/comment'
+                                'comment'      =>'v1/comment',
+
                             ],
                         /*'tokens' => [
                             '{id}' => '<id:\\w+>',
