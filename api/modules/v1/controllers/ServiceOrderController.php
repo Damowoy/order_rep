@@ -7,12 +7,11 @@ use yii\rest\ActiveController;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
-use yii\db\Query;
 use common\models\User;
 use common\models\LoginForm;
 use api\modules\v1\models\ServiceOrder;
 use api\modules\v1\models\OrderStdate;
-use api\modules\v1\models\Comment;
+
 
 /**
  * Firm Controller API
@@ -88,22 +87,8 @@ class ServiceOrderController extends ActiveController
             foreach ($model as $val){
                 $userArry =User::findOne(['id'=>$val->user_id]);
                 $managerArry =User::findOne(['id'=>$val->engener_id]);
-                //$orderStdateArray =OrderStdate::findOne(['service_order_id'=>$val->id]);
+                $orderStdateArray =OrderStdate::findOne(['service_order_id'=>$val->id]);
 
-                $orderStdateArray = (new \yii\db\Query())
-                    ->select(['name', 'created_at'])
-                    ->from('order_stdate')
-                    ->leftJoin('status', 'status.id = order_stdate.status_id')
-                    ->where(['service_order_id' => $val->id])
-                    ->all();
-
-                $commentArray = (new \yii\db\Query())
-                    ->select(['comment', 'lastname', 'firstname'])
-                    ->from('comment')
-                    ->leftJoin('user', 'user.id = comment.user_id')
-                    ->where(['service_order_id' => $val->id])
-                    ->all();
-                //$commentArray =Comment::find()->where(['service_order_id'=>$val->id])->all();
 
                 if($managerArry){
                     $managerObect=array(
@@ -131,8 +116,7 @@ class ServiceOrderController extends ActiveController
                     'company'     => $val->company,
                     'address'     => $val->address,
                     'place'       => $val->place,
-                    'order_stdate'=> $orderStdateArray,
-                    'comments'    => $commentArray
+                    'order_stdate'=> $orderStdateArray
 
                 );
 
