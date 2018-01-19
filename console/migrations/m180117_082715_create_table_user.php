@@ -22,16 +22,16 @@ class m180117_082715_create_table_user extends Migration
             'id'         => $this->primaryKey(),
             'role_id'    => $this->integer(),
             'username'   => $this->string()->notNull(),
-            'auth_key'   => $this->string(32)->notNull(),
+            'auth_key'   => $this->string(32),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string(),
-            'lastname'   => $this->string(32)->notNull(),
-            'firstname'  => $this->string(32)->notNull(),
+            'lastname'   => $this->string(32),
+            'firstname'  => $this->string(32),
             'phone'      => $this->string(32)->notNull(),
             'email'      => $this->string()->notNull(),
             'status'     => $this->smallInteger()->notNull()->defaultValue(10),
-            'created_at' => $this->integer()->notNull(),
-            'updated_at' => $this->integer()->notNull(),
+            'created_at' => $this->integer(),
+            'updated_at' => $this->integer(),
         ], $tableOptions);
 
      //   $this->createIndex('idx-token-user_id', '{{%user}}', 'role_id');
