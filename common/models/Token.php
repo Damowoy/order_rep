@@ -25,7 +25,8 @@ class Token extends ActiveRecord
     public function fields()
     {
         return [
-            'token' => 'token',
+            'token'   => 'token',
+            'user_id' => 'user_id',
             'expired' => function () {
                 return date(DATE_RFC3339, $this->expired_at);
             },
