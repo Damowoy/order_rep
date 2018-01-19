@@ -51,7 +51,8 @@ return [
                     'GET orders'             =>'v1/service-order/list-order',
                     'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
                     'GET profiles'           =>'v1/service-order/profiles',
-                    'POST orders/status'     =>'v1/service-order/eneger-status',
+                    'POST orders/status'     =>'v1/service-order/engener-status',
+                    'POST orders/finisdate'  =>'v1/service-order/finish-time',
 
                // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
                    // 'profile/<id:\d+>'      =>'v1/user/view',

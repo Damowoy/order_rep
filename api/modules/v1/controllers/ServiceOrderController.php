@@ -124,7 +124,7 @@ class ServiceOrderController extends ActiveController
         }
         return $dataOrder;
     }
-    public function actionEnegerStatus()
+    public function actionEngenerStatus()
     {
         $model = new ServiceOrder();
         $request = Yii::$app->request;
@@ -152,7 +152,39 @@ class ServiceOrderController extends ActiveController
 
           return;
     }
-    public function actionCreate()
+    public function actionFinishTime()
+    {
+        $modelStdate = new OrderStdate();
+        $request = Yii::$app->request;
+
+        $status_id=$request->post('status_id');
+        $id=$request->post('order_id');
+
+        if(isset($status_id) && !empty($status_id) && isset($id) && !empty($id)  ) {
+
+
+            $modelStdate->status_id = $status_id;
+            $modelStdate->service_order_id = $id;
+            $modelStdate->created_at = date("Y-m-d H:i:s");
+
+
+            if ($modelStdate->save()) {
+
+                $response = Yii::$app->getResponse();
+                $response->setStatusCode(201);
+
+            }else{
+                throw new \yii\web\ForbiddenHttpException('Failed insert time status!');
+            }
+
+        }else{
+            throw new \yii\web\ForbiddenHttpException('Faileds not params!');
+        }
+
+        return $modelStdate;
+
+    }
+        public function actionCreate()
     {
         $model = new ServiceOrder();
 
