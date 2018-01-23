@@ -21,7 +21,7 @@ return [
          'request' => [
               'parsers' => [
                   'application/json' => 'yii\web\JsonParser',
-              ]
+              ],
         ],
        'response'=>[
           "format" => 'json'
@@ -45,35 +45,38 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
-                // 'GET profile' => 'profile/index',
-                    'auth'                   =>'v1/user/login',
-                    'user/?acces_token=<id>' =>'v1/user/view',
-                    'GET orders'             =>'v1/service-order/list-order',
-                    'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
-                    'GET profiles'           =>'v1/service-order/profiles',
-                    'POST orders/status'     =>'v1/service-order/engener-status',
-                    'POST orders/finisdate'  =>'v1/service-order/finish-time',
-
-               // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
+                 'docs'                   =>'v1/site/docs',
+                 'site/json-schema'       =>'v1/site/json-schema',
+                 'doc'                    =>'v1/site/doc',
+                 'POST auth'              =>'v1/user/login',
+                 'user/<id:\d+>'          =>'v1/user/view',
+                 'GET, orders'            =>'v1/service-order/list-order',
+                 'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
+                 'GET profiles'           =>'v1/service-order/profiles',
+                 'POST orders/status'     =>'v1/service-order/engener-status',
+                 'POST orders/finisdate'  =>'v1/service-order/finish-time',
+                 'POST orders/create'     =>'v1/service-order/create',
+  
+                 
+                //  'user/?acces_token=<id>' =>'v1/user/view',
+                   // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
                    // 'profile/<id:\d+>'      =>'v1/user/view',
                    // 'GET profile'       =>'profile/index',
                    // 'PUT,PATCH profile' =>'profile/update',
+                   //'<action>'=>'v1/site/<action>',
                     [
                         'class' => 'yii\rest\UrlRule',
-                        'controller' =>//_EkZYCIB8rm51yMfCvIHr0sqTcHRNcb8
-                            [ //(?P<id>\d+)
+                        'controller' =>
+                            [
                                 'user'         =>'v1/user',
                                 'firm'         =>'v1/firm',
                                 'orders'       =>'v1/service-order',
-                                'comment'      =>'v1/comment',
-
+                                'comments'     =>'v1/comment',
+                                'times'        =>'v1/order-stdate',
+                                
                             ],
-                        /*'tokens' => [
-                            '{id}' => '<id:\\w+>',
-                            '{type}'=>'<type:\\w+>'
-                        ],*/
                     ],
-
+       // //(?P<id>\d+)
                     //'controller'    => ['user'=>'v1/user','yyy'=>'v1/user/tm','firm'=>'v1/firm'],//,'v1/user/view','v1/user/login','v1/firm'
                     //'yyy'          => 'v1/user/tm', //user/<id:\d+>
                     ///<id:\d+>
@@ -106,7 +109,15 @@ return [
                 ],*/
             ],
         ],
-
+       /* 'urlManagerBackend' => [
+            'class' => 'yii\web\urlManager',
+            'baseUrl' => 'http://orderrep/',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                'http://api.orderrep/' =>'site/api',
+            ]
+        ],*/
     ],
 
     'params' => $params,

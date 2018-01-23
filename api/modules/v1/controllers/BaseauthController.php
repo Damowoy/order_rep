@@ -7,8 +7,13 @@ use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\AccessControl;
 
+/**
+ * Class BaseauthController
+ * @package api\modules\v1\controllers
+ */
 class BaseauthController extends ActiveController
 {
+    
     /**
      * @return array
      */

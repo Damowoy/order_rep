@@ -3,20 +3,49 @@ namespace api\modules\v1\controllers;
 
 use Yii;
 use yii\rest\Controller;
-use api\modules\v1\models\LoginForm;
-use api\modules\v1\models\Token;
+use common\models\LoginForm;
+use common\models\User;
+
 
 /**
  * User Controller API
  *
  * @author Budi Irawan <deerawan@gmail.com>
  */
+
 class UserController extends Controller
 {
-    public $modelClass = 'api\modules\v1\models\User';
-
+    public $modelClass = '\common\models\User';
+    
     /**
-     * @inheritdoc
+     * @SWG\Post(
+     *   path="/auth",
+     *   tags={"user"},
+     *   summary="Authorization",
+     *   produces = {"application/json"},
+     *	 consumes = {"application/json"},
+     *   @SWG\Parameter(
+     *        in = "formData",
+     *        name = "username",
+     *        description = "nikname",
+     *        required = true,
+     *        type = "string"
+     *     ),
+     *     @SWG\Parameter(
+     *        in = "formData",
+     *        name = "password",
+     *        description = "pass",
+     *        required = true,
+     *        type = "string"
+     *     ),
+     *   @SWG\Response(
+     *     response=200,
+     *     description="success",
+     *     @SWG\Header(header="Allow", type="POST"),
+     *     @SWG\Header(header="Content-Type", type="application/json; charset=UTF-8")
+     *   )
+     *
+     * )
      */
     public function actionLogin()
     {
@@ -28,23 +57,55 @@ class UserController extends Controller
             return $model;
         }
     }
-
+    /**
+     * @SWG\Get(
+     *   path="/user/{id}",
+     *   tags={"user"},
+     *   summary="User id",
+     *   @SWG\Response(
+     *     response=200,
+     *     description="success"
+     *   ),
+     *   @SWG\Parameter(
+     *        in = "path",
+     *        name = "id",
+     *        description = "User id",
+     *        required = true,
+     *        type = "integer"
+     *    )
+     * )
+     *
+     **/
+    
+    /**
+     * @param $id
+     * @return null|static
+     */
     public function actionView($id)
+    {
+        $token= User::findOne([
+            'id' => $id
+        ]);
+        return $token;
+    }
+    
+  /*  public function actionView($id)
     {
         $token= Token::findOne([
             'token' => $id
         ]);
-
         return $token;
-
-    }
-
+    }*/
+  
+    /**
+     * @return array
+     */
     protected function verbs()
     {
         return [
             'login' => ['post'],
-
         ];
     }
+    
 
 }
