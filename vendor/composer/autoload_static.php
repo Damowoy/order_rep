@@ -4,14 +4,15 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
+class ComposerStaticInitfeb52c333498216c73ce261bceec5407
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        '0ccdf99b8f62f02c52cba55802e0c2e7' => __DIR__ . '/..' . '/zircote/swagger-php/src/functions.php',
         '180092cfc969a12e06f2132a203a3184' => __DIR__ . '/..' . '/codeception/verify/src/Codeception/function.php',
     );
 
@@ -29,6 +30,10 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
+        ),
+        'l' => 
+        array (
+            'light\\swagger\\' => 14,
         ),
         'c' => 
         array (
@@ -49,7 +54,7 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\BrowserKit\\' => 29,
-            'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 49,
+            'Swagger\\' => 8,
         ),
         'P' => 
         array (
@@ -71,6 +76,7 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
             'DeepCopy\\' => 9,
         ),
         'C' => 
@@ -112,8 +118,12 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
-            1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
-            2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            1 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
+            2 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
+        ),
+        'light\\swagger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/light/yii2-swagger/src',
         ),
         'cebe\\markdown\\' => 
         array (
@@ -159,9 +169,9 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
         array (
             0 => __DIR__ . '/..' . '/symfony/browser-kit',
         ),
-        'Stecman\\Component\\Symfony\\Console\\BashCompletion\\' => 
+        'Swagger\\' => 
         array (
-            0 => __DIR__ . '/..' . '/stecman/symfony-console-completion/src',
+            0 => __DIR__ . '/..' . '/zircote/swagger-php/src',
         ),
         'Psr\\Log\\' => 
         array (
@@ -186,6 +196,10 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
         'Doctrine\\Instantiator\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
+        ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
         ),
         'DeepCopy\\' => 
         array (
@@ -782,10 +796,10 @@ class ComposerStaticInit33057934f3e7eaaa1ce2d53797277936
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit33057934f3e7eaaa1ce2d53797277936::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit33057934f3e7eaaa1ce2d53797277936::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit33057934f3e7eaaa1ce2d53797277936::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit33057934f3e7eaaa1ce2d53797277936::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfeb52c333498216c73ce261bceec5407::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfeb52c333498216c73ce261bceec5407::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitfeb52c333498216c73ce261bceec5407::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitfeb52c333498216c73ce261bceec5407::$classMap;
 
         }, null, ClassLoader::class);
     }

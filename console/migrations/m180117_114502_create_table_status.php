@@ -21,7 +21,25 @@ class m180117_114502_create_table_status extends Migration
             'id'      => $this->primaryKey(),
             'name'    => $this->string()->notNull(),
         ], $tableOptions);
-
+    
+        $this->insert('{{%status}}', [
+            'name'  => 'Open'
+        ]);
+        $this->insert('{{%status}}', [
+            'name'      => 'Assigned',
+        ]);
+        $this->insert('{{%status}}', [
+            'name'      => 'In Process ',
+        ]);
+        $this->insert('{{%status}}', [
+            'name'      => 'Resolved',
+        ]);
+        $this->insert('{{%status}}', [
+            'name'      => 'Closed',
+        ]);
+        $this->insert('{{%status}}', [
+            'name'      => 'Reopened',
+        ]);
     }
 
     /**

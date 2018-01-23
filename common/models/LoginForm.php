@@ -3,7 +3,7 @@ namespace common\models;
 
 use Yii;
 use yii\base\Model;
-
+use common\models\Token;
 /**
  * Login form
  */
@@ -73,5 +73,20 @@ class LoginForm extends Model
         }
 
         return $this->_user;
+    }
+    
+    /**
+     * @return \common\models\Token|null
+     */
+    public function auth()
+    {
+        if ($this->validate()) {
+            $token = new Token();
+            $token->user_id = $this->getUser()->id;
+            $token->generateToken(time() + 3600 * 24);
+            return $token->save() ? $token : null;
+        } else {
+            return null;
+        }
     }
 }

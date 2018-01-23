@@ -12,27 +12,24 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use light\swagger;
+
+
+
+
 
 /**
  * Site controller
  */
 class SiteController extends Controller
 {
-    /**
-     * @inheritdoc
-     */
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout'],
                 'rules' => [
-                    [
-                        'actions' => ['signup'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
                     [
                         'actions' => ['logout'],
                         'allow' => true,
@@ -48,11 +45,38 @@ class SiteController extends Controller
             ],
         ];
     }
-
     /**
-     * @inheritdoc
+     * @return array
      */
     public function actions()
+    {
+
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'docs' => [
+                'class' => 'light\swagger\SwaggerAction',
+                'restUrl' =>  'http://api.orderrep/' ,
+            ],
+            'api' => [
+                'class' => 'light\swagger\SwaggerApiAction',
+                //The scan directories, you should use real path there.
+                'scanDir' => [
+                    Yii::getAlias('@api/modules/v1/swagger'),
+                    Yii::getAlias('@api/modules/v1/controllers'),
+                 //   Yii::getAlias('@api/modules/v1/models'),
+                  //  Yii::getAlias('@api/models'),
+                ],
+                //The security key
+                'api_key'  => 'test',//KR4ZXMa3DW3KJLU5eKSi9mvj15p9s3AG
+//                'clientId' => '11'
+            ],
+        ];
+    }
+
+    
+   /* public function actions()
     {
         return [
             'error' => [
@@ -63,8 +87,8 @@ class SiteController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
-    }
-
+    }*/
+    
     /**
      * Displays homepage.
      *
