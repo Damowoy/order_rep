@@ -59,14 +59,9 @@ class SiteController extends Controller
                     Yii::getAlias('@api/modules/v1/models'),
                     Yii::getAlias('@common/models'),
                 ],
-                'cache' => 'cache',
-                'cacheKey' => 'api-swagger-cache',
-                'api_key'  => 'Bearer GCclew_b1DkQyRvNKz0GaYhpRYrPYJtI'
             ],
         ];
     }
-
-
 }
 
 
