@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\ServiceOrder;
+use common\models\ServiceOrder;
 use backend\models\ServiceOrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -15,7 +15,7 @@ use yii\filters\VerbFilter;
 class ServiceOrderController extends Controller
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function behaviors()
     {

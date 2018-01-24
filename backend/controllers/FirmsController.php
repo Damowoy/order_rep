@@ -15,7 +15,7 @@ use yii\filters\VerbFilter;
 class FirmsController extends Controller
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function behaviors()
     {

@@ -2,10 +2,10 @@
 namespace common\models;
 
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use backend\models\Roles;
 
 /**
  * User model
@@ -23,6 +23,8 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $firm_id;
+    
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
     
@@ -50,6 +52,9 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            [['username', 'email','role_id','password_hash','firstname'], 'required'],
+            [['username', 'lastname', 'firstname','phone' ], 'string', 'max' => 100],
+            [['email'], 'string', 'max' => 100],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
@@ -63,27 +68,54 @@ class User extends ActiveRecord implements IdentityInterface
         return[
             'id'        => 'id',
             'username'  => 'username',
-            'email'     => 'email'
-        
+            'email'     => 'email',
+            'phone'     => 'phone',
+            'lastname'  => 'lastname',
+            'firstname' => 'firstname',
+            'role_id'   => 'role_id',
         ];
         
     }
-
+    
     /**
-     * @inheritdoc
+     * @return array
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id'            => 'ID',
+            'username'      => 'Username',
+            'password_hash' => 'Password',
+            'email'         => 'Email',
+            'phone'         => 'Phone',
+            'lastname'      => 'Last name',
+            'firstname'     => 'First name',
+            'role_id'       => 'Role ID'
+        ];
+    }
+    
+    /**
+     * @param int|string $id
+     * @return null|IdentityInterface|static
      */
     public static function findIdentity($id)
     {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTokens()
     {
         return $this->hasMany(Token::className(), ['user_id' => 'id']);
     }
+    
     /**
-     * @inheritdoc
+     * @param mixed $token
+     * @param null $type
+     * @return array|null|ActiveRecord|IdentityInterface
      */
-
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::find()
@@ -137,25 +169,26 @@ class User extends ActiveRecord implements IdentityInterface
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
-
+    
     /**
-     * @inheritdoc
+     * @return int|mixed|string
      */
     public function getId()
     {
         return $this->getPrimaryKey();
     }
-
+    
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getAuthKey()
     {
         return $this->auth_key;
     }
-
+    
     /**
-     * @inheritdoc
+     * @param string $authKey
+     * @return bool
      */
     public function validateAuthKey($authKey)
     {
@@ -205,5 +238,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRoles()
+    {
+        return $this->hasMany(Roles::className(), ['id' => 'role_id']);
     }
 }

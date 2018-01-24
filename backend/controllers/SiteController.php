@@ -13,7 +13,7 @@ use common\models\LoginForm;
 class SiteController extends Controller
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function behaviors()
     {
@@ -40,9 +40,9 @@ class SiteController extends Controller
             ],
         ];
     }
-
+    
     /**
-     * @inheritdoc
+     * @return array
      */
     public function actions()
     {

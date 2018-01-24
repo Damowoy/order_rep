@@ -26,9 +26,14 @@ class ServiceOrder extends  ActiveRecord
     public function rules()
     {
         return [
-            [['status_id','name_service', 'description','company','place','address'], 'required']
+            [['user_id', 'engener_id', 'status_id'], 'integer'],
+            [['status_id','name_service', 'description','company','place','address'], 'required'],
+            [['description'], 'string'],
+            [['name_service', 'company', 'address'], 'string', 'max' => 255],
+            [['place'], 'string', 'max' => 50],
         ];
     }
+
     
     /**
      * @return array
@@ -37,6 +42,7 @@ class ServiceOrder extends  ActiveRecord
     {
         return [
             'id'            => 'ID',
+            'user_id'       => 'User ID',
             'name_service'  => 'Name service',
             'description'   => 'Description',
             'status_id'     => 'Status id',

@@ -2,10 +2,9 @@
 
 namespace backend\models;
 
-use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\ServiceOrder;
+use common\models\ServiceOrder;
 
 /**
  * ServiceOrderSearch represents the model behind the search form about `backend\models\ServiceOrder`.
@@ -13,7 +12,7 @@ use backend\models\ServiceOrder;
 class ServiceOrderSearch extends ServiceOrder
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function rules()
     {
@@ -22,9 +21,9 @@ class ServiceOrderSearch extends ServiceOrder
             [['name_service', 'description', 'company', 'place', 'address'], 'safe'],
         ];
     }
-
+    
     /**
-     * @inheritdoc
+     * @return array
      */
     public function scenarios()
     {

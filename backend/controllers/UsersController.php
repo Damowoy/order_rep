@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Users;
+use common\models\User;
 use backend\models\UsersSearch;
 use backend\models\Roles;
 use backend\models\Firms;
@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
 class UsersController extends Controller
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function behaviors()
     {
@@ -38,52 +38,9 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-
-
         $searchModel = new UsersSearch();
-
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-
-       // $dataProvider = $dataProvider::find()->select('user.*,role.name as namerole')->leftJoin('role', 'user.role_id=role.id')->all();
-
-        /*  $customers = Customer::find()
-              ->select('customer.*')
-              ->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')
-              ->where(['order.status' => Order::STATUS_ACTIVE])
-              ->with('orders')
-              ->all();*/
-
-       //
-
-  //   //   $dataProvider->findone(1)->roles,
-       /* $customer = $searchModel::findOne(1);
-        $orders = $customer->roles;*/
-
-      //  $searchModel->link('roles', $searchModel->roles);
-      //
-       // $customers = ;
-        //$searchModel::find()->all()
-      /*  echo "<pre>";
-        print_r($customers);
-        exit();*/
-
-       /* $result=$searchModel::find()->with('roles')->all();
-        $dataResult=array();
-        foreach ($result as $val) {
-            $dataResult[]=array(
-                'id'        => $val->id,
-                'username'  => $val->username,
-                'email'     => $val->email,
-                'phone'     => $val->phone,
-                'lastname'  => $val->lastname,
-                'firstname' => $val->firstname,
-                'role_id'   => $val->role_id,
-                'name_role' => $val->roles[0]->name
-            );
-        }*/
-
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -109,7 +66,7 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Users();
+        $model = new User();
         $modelRoles = new Roles();
         $modelFirms = new Firms();
         $listRoles = $modelRoles::find()->all();
@@ -184,7 +141,7 @@ class UsersController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Users::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

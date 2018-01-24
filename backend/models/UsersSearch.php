@@ -1,20 +1,19 @@
 <?php
-
 namespace backend\models;
 
-use Yii;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Users;
+use common\models\User;
 
 
 /**
  * UsersSearch represents the model behind the search form about `backend\models\Users`.
  */
-class UsersSearch extends Users
+class UsersSearch extends User
 {
     /**
-     * @inheritdoc
+     * @return array
      */
     public function rules()
     {
@@ -23,13 +22,12 @@ class UsersSearch extends Users
             [['username', 'email'], 'safe'],
         ];
     }
-
+    
     /**
-     * @inheritdoc
+     * @return array
      */
     public function scenarios()
     {
-        // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
@@ -42,7 +40,7 @@ class UsersSearch extends Users
      */
     public function search($params)
     {
-        $query = Users::find();
+        $query = User::find();
 
         // add conditions that should always apply here
 
