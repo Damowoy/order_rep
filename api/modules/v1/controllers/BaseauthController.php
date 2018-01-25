@@ -13,16 +13,6 @@ use yii\filters\AccessControl;
  */
 class BaseauthController extends ActiveController
 {
-    /**
-     * @return array
-     */
-    public static function allowedDomains()
-    {
-        return [
-            '*'
-        ];
-    }
-    
 
     /**
      * @return array
@@ -34,6 +24,7 @@ class BaseauthController extends ActiveController
             HttpBasicAuth::className(),
             HttpBearerAuth::className(),
         ];
+        $behaviors['authenticator']['except'] = ['options'];
         $behaviors['access'] = [
             'class' => AccessControl::className(),
             'rules' => [
@@ -47,13 +38,16 @@ class BaseauthController extends ActiveController
         $behaviors['corsFilter'] = [
             'class' => \yii\filters\Cors::className(),
             'cors' => [
-                'Origin' => static::allowedDomains(),
+                'Origin' => ['*'],
                 'Access-Control-Request-Method' => ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
                 'Access-Control-Allow-Credentials' => true,
                 'Access-Control-Max-Age' => 3600,
                 'Access-Control-Request-Headers' => ['*'],
             ],
         ];
+
+       
+        
         return $behaviors;
     }
 
