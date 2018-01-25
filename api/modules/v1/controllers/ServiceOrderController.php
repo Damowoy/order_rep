@@ -53,6 +53,32 @@ class ServiceOrderController extends BaseauthController
     
     /**
      * @SWG\Get(
+     *   path="/profile",
+     *   tags={"order"},
+     *   summary="User data",
+     *   @SWG\Response(
+     *     response=200,
+     *     description="success"
+     *   )
+     * )
+     *
+     **/
+    
+    /**
+     * @param null $id
+     * @return array|yii\db\ActiveRecord[]
+     * @throws yii\web\ForbiddenHttpException
+     */
+    public function actionUser($id = Null)
+    {
+        $model= User::findOne([
+            'id' => Yii::$app->user->identity->id
+        ]);
+        return $model;
+    }
+    
+    /**
+     * @SWG\Get(
      *   path="/orders/{id}",
      *   tags={"order"},
      *   summary="List orders",

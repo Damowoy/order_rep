@@ -52,6 +52,7 @@ return [
                  'user/<id:\d+>'          =>'v1/user/view',
                  'GET, orders'            =>'v1/service-order/list-order',
                  'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
+                 'GET profile'            =>'v1/service-order/user',
                  'GET profiles'           =>'v1/service-order/profiles',
                  'POST orders/status'     =>'v1/service-order/engener-status',
                  'POST orders/finisdate'  =>'v1/service-order/finish-time',

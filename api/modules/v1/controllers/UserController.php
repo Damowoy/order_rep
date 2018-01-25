@@ -83,10 +83,10 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        $token= User::findOne([
+        $model= User::findOne([
             'id' => $id
         ]);
-        return $token;
+        return $model;
     }
     
     /**
