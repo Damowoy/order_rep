@@ -50,15 +50,25 @@ return [
                  'doc'                    =>'v1/site/doc',
                  'POST auth'              =>'v1/user/login',
                  'user/<id:\d+>'          =>'v1/user/view',
-                 'GET, orders'            =>'v1/service-order/list-order',
+                 'orders'            =>'v1/service-order/list-order',
                  'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
                  'GET profile'            =>'v1/service-order/user',
                  'GET profiles'           =>'v1/service-order/profiles',
                  'POST orders/status'     =>'v1/service-order/engener-status',
                  'POST orders/finisdate'  =>'v1/service-order/finish-time',
                  'POST orders/create'     =>'v1/service-order/create',
-  
-                 
+               
+                'OPTIONS orders'            =>'v1/service-order/options',
+                'OPTIONS orders/<id:\d+>'    =>'v1/service-order/options',
+                'OPTIONS profile'            =>'v1/service-order/options',
+                'OPTIONS profiles'           =>'v1/service-order/options',
+                'OPTIONS orders/status'     =>'v1/service-order/options',
+                'OPTIONS orders/finisdate'  =>'v1/service-order/options',
+                'OPTIONS orders/create'     =>'v1/service-order/options',
+    
+        
+                
+           
                 //  'user/?acces_token=<id>' =>'v1/user/view',
                    // <controller:\w+>/<action:\w+>/?query=test' => '<controller>/<action>
                    // 'profile/<id:\d+>'      =>'v1/user/view',
