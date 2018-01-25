@@ -16,7 +16,34 @@ use common\models\User;
 class UserController extends Controller
 {
     public $modelClass = '\common\models\User';
+    /**
+     * @return array
+     */
+    public static function allowedDomains()
+    {
+        return [
+            '*'
+        ];
+    }
     
+    /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        
+        $behaviors['corsFilter'] = [
+            'class' => \yii\filters\Cors::className(),
+            'cors' => [
+                'Origin' => static::allowedDomains(),
+                'Access-Control-Request-Method' => ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
+                'Access-Control-Allow-Credentials' => true,
+                'Access-Control-Max-Age' => 3600,
+            ],
+        ];
+        return $behaviors;
+    }
     /**
      * @SWG\Post(
      *   path="/auth",
@@ -83,10 +110,10 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
-        $model= User::findOne([
+        $token= User::findOne([
             'id' => $id
         ]);
-        return $model;
+        return $token;
     }
     
     /**
