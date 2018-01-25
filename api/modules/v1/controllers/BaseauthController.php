@@ -51,6 +51,7 @@ class BaseauthController extends ActiveController
                 'Access-Control-Request-Method' => ['POST', 'GET', 'PUT', 'DELETE', 'OPTIONS'],
                 'Access-Control-Allow-Credentials' => true,
                 'Access-Control-Max-Age' => 3600,
+                'Access-Control-Request-Headers' => ['*'],
             ],
         ];
         return $behaviors;
