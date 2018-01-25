@@ -39,18 +39,7 @@ class SiteController extends Controller
         ];
     }
     
-    public function actionsLogin()
-    {
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->getRequest()->getBodyParams(), '') && $model->login()) {
-            return ['access_token' => Yii::$app->user->identity->getAuthKey()];
-        } else {
-            $model->validate();
-            return $model;
-        }
-    
-    }
-    
+
     /**
      * @return array
      */
