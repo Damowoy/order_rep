@@ -50,7 +50,7 @@ return [
                  'doc'                    =>'v1/site/doc',
                  'POST auth'              =>'v1/user/login',
                  'user/<id:\d+>'          =>'v1/user/view',
-                 'orders'            =>'v1/service-order/list-order',
+               //  'GET,OPTIONS orders'     =>'v1/service-order/list-order',
                  'GET orders/<id:\d+>'    =>'v1/service-order/list-order',
                  'GET profile'            =>'v1/service-order/user',
                  'GET profiles'           =>'v1/service-order/profiles',
@@ -58,13 +58,8 @@ return [
                  'POST orders/finisdate'  =>'v1/service-order/finish-time',
                  'POST orders/create'     =>'v1/service-order/create',
                
-                'OPTIONS orders'            =>'v1/service-order/options',
-                'OPTIONS orders/<id:\d+>'    =>'v1/service-order/options',
-                'OPTIONS profile'            =>'v1/service-order/options',
-                'OPTIONS profiles'           =>'v1/service-order/options',
-                'OPTIONS orders/status'     =>'v1/service-order/options',
-                'OPTIONS orders/finisdate'  =>'v1/service-order/options',
-                'OPTIONS orders/create'     =>'v1/service-order/options',
+               // 'OPTIONS orders'            =>'v1/service-order/list-order',
+
     
         
                 
@@ -86,6 +81,9 @@ return [
                                 'times'        =>'v1/order-stdate',
                                 
                             ],
+                        'extraPatterns' => [
+                            'orders' => 'v1/service-order/options',
+                        ]
                     ],
        // //(?P<id>\d+)
                     //'controller'    => ['user'=>'v1/user','yyy'=>'v1/user/tm','firm'=>'v1/firm'],//,'v1/user/view','v1/user/login','v1/firm'
