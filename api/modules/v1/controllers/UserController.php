@@ -41,9 +41,6 @@ class UserController extends Controller
                 'Access-Control-Allow-Credentials' => true,
                 'Access-Control-Max-Age' => 3600,
                 'Access-Control-Request-Headers' => ['*'],
-                
-                
-                
             ],
         ];
         return $behaviors;

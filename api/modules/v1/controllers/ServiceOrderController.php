@@ -5,6 +5,7 @@ use yii;
 use common\models\User;
 use common\models\ServiceOrder;
 use common\models\OrderStdate;
+use yii\web\ForbiddenHttpException;
 
 
 /**
@@ -47,7 +48,7 @@ class ServiceOrderController extends BaseauthController
         if (Yii::$app->user->identity->role_id == 2) {
             return User::find()->where(['role_id' => 3])->all();
         } else {
-            throw new \yii\web\ForbiddenHttpException('invalid user rights (role)!');
+            throw new ForbiddenHttpException('invalid user rights (role)!');
         }
     }
     
@@ -71,10 +72,13 @@ class ServiceOrderController extends BaseauthController
      */
     public function actionUser($id = Null)
     {
-        $model= User::findOne([
-            'id' => Yii::$app->user->identity->id
+        if (is_null($id)) {
+            $id = Yii::$app->user->identity->id;
+        }
+
+        return User::findOne([
+            'id' => $id
         ]);
-        return $model;
     }
     
     /**
@@ -114,57 +118,58 @@ class ServiceOrderController extends BaseauthController
      */
     public function actionListOrder($id = Null)
     {
-        if (isset($id) && !empty($id)) {
+        if (!is_null($id)) {
             $model = ServiceOrder::find()->where(['id' => $id])->all();
         } else {
-            if (Yii::$app->user->identity->role_id == 2) {
+            if (Yii::$app->user->identity->role_id == 2) {  # What means this number 2 ?
                 $model = ServiceOrder::find()->all();
             } else {
                 $model = ServiceOrder::find()->where(['user_id' => Yii::$app->user->id])->all();
             }
         }
-        $dataOrder = array();
-        if ($model) {
-            foreach ($model as $val) {
-                /** @var User $userArry */
-                $userArry = User::findOne(['id' => $val->user_id]);
 
-                /** @var User $managerArry */
-                $managerArry = User::findOne(['id' => $val->engener_id]);
-                $orderStdateArray = OrderStdate::findOne(['service_order_id' => $val->id]);
-
-                if ($managerArry) {
-                    $managerObect = array(
-                        'id' => $managerArry->id,
-                        'lastname' => $managerArry->lastname,
-                        'firstname' => $managerArry->firstname,
-                    );
-                } else {
-                    $managerObect = array();
-                }
-
-                $dataOrder[] = array(
-                    'name' => array(
-                        'id' => $val->id,
-                        'title' => $val->name_service
-                    ),
-                    'user' => array(
-                        'id' => $userArry->id,
-                        'lastname' => $userArry->lastname,
-                        'firstname' => $userArry->firstname,
-                    ),
-                    'engener' => $managerObect,
-                    'status_id' => $val->status_id,
-                    'description' => $val->description,
-                    'company' => $val->company,
-                    'address' => $val->address,
-                    'place' => $val->place,
-                    'order_stdate' => $orderStdateArray
-
-                );
-
-            }
+        if (!$model) {
+            return [];
         }
+
+        $dataOrder = [];
+        foreach ($model as $val) {
+            /** @var User $user */
+            $user = User::findOne(['id' => $val->user_id]);
+
+            /** @var User $manager */
+            $manager = User::findOne(['id' => $val->engener_id]);
+            $orderStdateArray = OrderStdate::findOne(['service_order_id' => $val->id]);
+
+            $managerArr = [];
+            if ($manager) {
+                $managerArr = [
+                    'id' => $manager->id,
+                    'lastname' => $manager->lastname,
+                    'firstname' => $manager->firstname,
+                ];
+            }
+
+            $dataOrder[] = [
+                'name' => [
+                    'id' => $val->id,
+                    'title' => $val->name_service
+                ],
+                'user' => [
+                    'id' => $user->id,
+                    'lastname' => $user->lastname,
+                    'firstname' => $user->firstname,
+                ],
+                'engener' => $managerArr,
+                'status_id' => $val->status_id,
+                'description' => $val->description,
+                'company' => $val->company,
+                'address' => $val->address,
+                'place' => $val->place,
+                'order_stdate' => $orderStdateArray
+            ];
+        }
+
         return $dataOrder;
     }
     
@@ -174,7 +179,7 @@ class ServiceOrderController extends BaseauthController
      *   tags={"order"},
      *   summary="Update status order",
      *   produces = {"application/json"},
-     *	 consumes = {"application/json"},
+     *   consumes = {"application/json"},
      *   @SWG\Parameter(
      *        in = "formData",
      *        name = "id",
@@ -213,26 +218,24 @@ class ServiceOrderController extends BaseauthController
     public function actionEngenerStatus()
     {
         $request = Yii::$app->request;
-        $id         = $request->post('id');
-        $status_id  = $request->post('status_id');
-        $engener_id = $request->post('engener_id');
+        $id        = !empty($request->post('id')) ? $request->post('id') : 0;
+        $statusId  = !empty($request->post('status_id')) ? $request->post('status_id') : 0;
+        $engenerId = !empty($request->post('engener_id')) ? $request->post('engener_id') : 0;
        
         /** @var ServiceOrder $order */
         $order = ServiceOrder::findOne(['id' => $id]);
         
-        if (!empty($order) && isset($status_id) && !empty($status_id) && isset($id) && !empty($id) && isset($engener_id) && !empty($engener_id)) {
-            
-                $order->status_id = $status_id;
-                $order->engener_id = $engener_id;
-                if ($order->save()) {
-                    return $this->actionListOrder($id);
-                } else {
-                    throw new \yii\web\ForbiddenHttpException('Failed update status!');
-                }
-     
-        } else {
-            throw new \yii\web\ForbiddenHttpException('Failed fields not!');
+        if (empty($order) || !$statusId || !$id || !$engenerId) {
+            throw new ForbiddenHttpException('Failed fields not!');
         }
+            
+        $order->status_id = $statusId;
+        $order->engener_id = $engenerId;
+        if (!$order->save()) {
+            throw new ForbiddenHttpException('Failed update status!');
+        }
+
+        return $this->actionListOrder($id);
     }
     
     /**
@@ -271,26 +274,25 @@ class ServiceOrderController extends BaseauthController
     {
         $modelStdate = new OrderStdate();
         $request = Yii::$app->request;
-        $status_id = $request->post('status_id');
-        $id = $request->post('order_id');
+        $statusId = !empty($request->post('status_id')) ? $request->post('status_id') : 0;
+        $id = !empty($request->post('order_id')) ? $request->post('order_id') : 0;
       
-        if (isset($status_id) && !empty($status_id) && isset($id) && !empty($id)) {
-           
-            $modelStdate->status_id = $status_id;
-            $modelStdate->service_order_id = $id;
-            $modelStdate->created_at = date("Y-m-d H:i:s");
-            
-            if ($modelStdate->save()) {
-                $response = Yii::$app->getResponse();
-                $response->setStatusCode(201);
-                return $modelStdate;
-            } else {
-                throw new \yii\web\ForbiddenHttpException('Failed insert time status!');
-            }
-            
-        } else {
-            throw new \yii\web\ForbiddenHttpException('Faileds not params!');
+        if (!$statusId || !$id) {
+            throw new ForbiddenHttpException('Failed not params!');
         }
+           
+        $modelStdate->status_id = $statusId;
+        $modelStdate->service_order_id = $id;
+        $modelStdate->created_at = date("Y-m-d H:i:s");
+
+        if (!$modelStdate->save()) {
+            throw new ForbiddenHttpException('Failed insert time status!');
+        }
+
+        $response = Yii::$app->getResponse();
+        $response->setStatusCode(201);
+
+        return $modelStdate;
     }
     
     /**
@@ -352,33 +354,28 @@ class ServiceOrderController extends BaseauthController
     {
         $model = new ServiceOrder();
         $model->user_id = Yii::$app->user->id;
-        $model->status_id = 1;
+        $model->status_id = 1; # What means this number 1 ?
         $model->load(Yii::$app->getRequest()->getBodyParams(), '');
         
-        if ($model->save()) {
-
-            $response = Yii::$app->getResponse();
-            $response->setStatusCode(201);
-            $id = implode(',', array_values($model->getPrimaryKey(true)));
-            $modelStdate = new OrderStdate();
-            $modelStdate->status_id = 1;
-            $modelStdate->service_order_id = $id;
-            $modelStdate->created_at = date("Y-m-d H:i:s");
-
-            if ($modelStdate->save()) {
-                
-                return [
-                   'order'   => $model,
-                   'date_st' => $modelStdate
-                ];
-                
-            } else {
-                throw new \yii\web\ForbiddenHttpException('Failed insert time status!');
-            }
-
-        } elseif (!$model->hasErrors()) {
-            throw new \yii\web\ForbiddenHttpException('Failed to create the object for unknown reason.');
+        if (!$model->save()) {
+            throw new ForbiddenHttpException('Failed to create the object for unknown reason.');
         }
+
+        $response = Yii::$app->getResponse();
+        $response->setStatusCode(201);
+        $id = implode(',', array_values($model->getPrimaryKey(true)));
+        $modelStdate = new OrderStdate();
+        $modelStdate->status_id = 1; # What means this number 1 ?
+        $modelStdate->service_order_id = $id;
+        $modelStdate->created_at = date("Y-m-d H:i:s");
+
+        if (!$modelStdate->save()) {
+            throw new ForbiddenHttpException('Failed insert time status!');
+        }
+
+        return [
+           'order'   => $model,
+           'date_st' => $modelStdate
+        ];
     }
-    
 }
